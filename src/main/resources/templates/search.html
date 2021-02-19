@@ -5,6 +5,8 @@
     <title>搜索结果</title>
 </head>
 <body>
+<a href="/">Index </a>
+<a href="/show/user/cart">Cart </a>
 <h1>搜索</h1>
 <div id="searchForm">
     <h2>精确搜索</h2>
@@ -22,6 +24,7 @@
         <td>商品状态</td>
         <td>商品图片</td>
         <td>商品描述</td>
+        <td>查看商品详情</td>
         <td>加入购物车</td>
     </tr>
     <tr th:each="searchResult:${searchResult}">
@@ -30,8 +33,11 @@
         <td th:text="${searchResult.status}">商品状态</td>
         <td><img th:src="${searchResult.image}">商品图片</td>
         <td th:text="${searchResult.descr}">商品描述</td>
-        <td><button>加入购物车</button></td>
+        <td><a th:href="'/show/item/detail?itemId='+${searchResult.id}">查看商品详情</a></td>
+        <td><button th:onclick="'addToCart('+${searchResult.id}+',1);'">加入购物车</button></td>
     </tr>
 </table>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="/static/js/addToCart.js"></script>
 </html>
