@@ -17,7 +17,7 @@ public class SysUserCart implements Serializable {
 
     private String uid;
 
-    private String items;
+    private SingleUserCart items;
 
 
     @Override

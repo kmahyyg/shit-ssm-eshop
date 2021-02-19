@@ -5,7 +5,7 @@
         <!--@mbg.generated-->
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="uid" jdbcType="VARCHAR" property="uid" />
-        <result column="items" jdbcType="VARCHAR" property="items" />
+        <result column="items" jdbcType="VARCHAR" property="items" javaType="xyz.kmahyyg.eshopdemo.model.SingleUserCart" typeHandler="xyz.kmahyyg.eshopdemo.mybatis.typehandlers.GenericJsonTypeHandler"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
@@ -16,10 +16,10 @@
     </select>
     <insert id="insert" parameterType="xyz.kmahyyg.eshopdemo.model.SysUserCart" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
         insert into sys_user_cart (`uid`, items)
-        values (#{uid,jdbcType=VARCHAR}, #{items,jdbcType=VARCHAR})
+        values (#{uid,jdbcType=VARCHAR}, #{items,jdbcType=VARCHAR,typeHandler=xyz.kmahyyg.eshopdemo.mybatis.typehandlers.GenericJsonTypeHandler})
     </insert>
     <update id="updateByUserId" parameterType="xyz.kmahyyg.eshopdemo.model.SysUserCart" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
-        update sys_user_cart set `items` = #{items,jdbcType=VARCHAR} where uid = #{uid,jdbcType=VARCHAR}
+        update sys_user_cart set `items` = #{items,jdbcType=VARCHAR,typeHandler=xyz.kmahyyg.eshopdemo.mybatis.typehandlers.GenericJsonTypeHandler} where uid = #{uid,jdbcType=VARCHAR}
     </update>
     <delete id="deleteByUserId" parameterType="string">
         delete from sys_user_cart where uid = #{uid}

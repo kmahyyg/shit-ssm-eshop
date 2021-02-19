@@ -5,14 +5,14 @@
         <!--@mbg.generated-->
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="oid" jdbcType="VARCHAR" property="oid" />
-        <result column="status" jdbcType="INTEGER" property="status" javaType="xyz.kmahyyg.eshopdemo.enums.OrderStatusEnum"/>
+        <result column="status" jdbcType="INTEGER" property="status" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="xyz.kmahyyg.eshopdemo.enums.OrderStatusEnum"/>
         <result column="items" jdbcType="VARCHAR" property="items" />
         <result column="uid" jdbcType="VARCHAR" property="uid" />
         <result column="finalPrice" jdbcType="DECIMAL" property="finalPrice" />
-        <result column="genTime" jdbcType="TIMESTAMP" property="genTime" />
-        <result column="paidTime" jdbcType="TIMESTAMP" property="paidTime" />
-        <result column="doneTime" jdbcType="TIMESTAMP" property="doneTime" />
-        <result column="refundTime" jdbcType="TIMESTAMP" property="refundTime" />
+        <result column="genTime" jdbcType="BIGINT" property="genTime" />
+        <result column="paidTime" jdbcType="BIGINT" property="paidTime" />
+        <result column="doneTime" jdbcType="BIGINT" property="doneTime" />
+        <result column="refundTime" jdbcType="BIGINT" property="refundTime" />
         <result column="paymentId" jdbcType="INTEGER" property="paymentId" />
         <result column="deliveryId" jdbcType="INTEGER" property="deliveryId" />
     </resultMap>
@@ -27,9 +27,9 @@
         `uid`, finalPrice, genTime,
         paidTime, doneTime, refundTime,
         paymentId, deliveryId)
-        values (#{oid,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{items,jdbcType=VARCHAR},
-        #{uid,jdbcType=VARCHAR}, #{finalPrice,jdbcType=DECIMAL}, #{genTime,jdbcType=TIMESTAMP},
-        #{paidTime,jdbcType=TIMESTAMP}, #{doneTime,jdbcType=TIMESTAMP}, #{refundTime,jdbcType=TIMESTAMP},
+        values (#{oid,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{items,jdbcType=VARCHAR},
+        #{uid,jdbcType=VARCHAR}, #{finalPrice,jdbcType=DECIMAL}, #{genTime,jdbcType=BIGINT},
+        #{paidTime,jdbcType=BIGINT}, #{doneTime,jdbcType=BIGINT}, #{refundTime,jdbcType=BIGINT},
         #{paymentId,jdbcType=INTEGER}, #{deliveryId,jdbcType=INTEGER})
     </insert>
     <select id="selectByOid" parameterType="string" resultMap="BaseResultMap">
@@ -58,16 +58,16 @@
                 finalPrice = #{finalPrice,jdbcType=DECIMAL},
             </if>
             <if test="genTime != null">
-                genTime = #{genTime,jdbcType=TIMESTAMP},
+                genTime = #{genTime,jdbcType=BIGINT},
             </if>
             <if test="paidTime != null">
-                paidTime = #{paidTime,jdbcType=TIMESTAMP},
+                paidTime = #{paidTime,jdbcType=BIGINT},
             </if>
             <if test="doneTime != null">
-                doneTime = #{doneTime,jdbcType=TIMESTAMP},
+                doneTime = #{doneTime,jdbcType=BIGINT},
             </if>
             <if test="refundTime != null">
-                refundTime = #{refundTime,jdbcType=TIMESTAMP},
+                refundTime = #{refundTime,jdbcType=BIGINT},
             </if>
             <if test="paymentId != null">
                 paymentId = #{paymentId,jdbcType=INTEGER},

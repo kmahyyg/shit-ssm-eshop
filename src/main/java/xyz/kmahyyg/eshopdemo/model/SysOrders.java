@@ -28,13 +28,13 @@ public class SysOrders implements Serializable {
 
     private BigDecimal finalPrice;
 
-    private Date genTime;
+    private Long genTime;
 
-    private Date paidTime;
+    private Long paidTime;
 
-    private Date doneTime;
+    private Long doneTime;
 
-    private Date refundTime;
+    private Long refundTime;
 
     private Integer paymentId;
 

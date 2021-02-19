@@ -14,7 +14,7 @@
     </form>
 </div>
 <h1>搜索结果</h1>
-<h2>搜索关键字：</h2><p th:text="${searchKey}"></p>
+<h2>搜索关键字：<span th:text="${searchKey}"></span></h2>
 <table>
     <tr>
         <td>商品名称</td>
@@ -28,7 +28,7 @@
         <td th:text="${searchResult.name}">商品名称</td>
         <td th:text="${searchResult.price}">商品价格</td>
         <td th:text="${searchResult.status}">商品状态</td>
-        <td><img th:src="${searchResult.image}"></td>
+        <td><img th:src="${searchResult.image}">商品图片</td>
         <td th:text="${searchResult.descr}">商品描述</td>
         <td><button>加入购物车</button></td>
     </tr>

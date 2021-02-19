@@ -14,6 +14,8 @@ import xyz.kmahyyg.eshopdemo.common.PublicResponse;
 import xyz.kmahyyg.eshopdemo.dao.SysUserCartDao;
 import xyz.kmahyyg.eshopdemo.dao.SysUsersDao;
 import xyz.kmahyyg.eshopdemo.enums.ErrorStatusEnum;
+import xyz.kmahyyg.eshopdemo.model.SingleItemInCart;
+import xyz.kmahyyg.eshopdemo.model.SingleUserCart;
 import xyz.kmahyyg.eshopdemo.model.SysUserCart;
 import xyz.kmahyyg.eshopdemo.model.SysUsers;
 
@@ -71,23 +73,15 @@ public class UserRestController {
             SysUserCart newUserCart = new SysUserCart();
             newUserCart.setUid(newUser.getUid());
             // build an empty cart, admin should not have any item in cart since you should not use it for shopping
-            Map<String, List<Map<String, Integer>>> cartListJSON= new HashMap<>();
-            List<Map<String, Integer>> cartList = new ArrayList<>();
-            // In Production:
-            // cartList.put("cart", "");
-            // In Debug:
-            // this is just an empty value, for example of cart structure.
-//            Map<String, Integer> singleItemInCart = new HashMap<>();
-//            singleItemInCart.put("itemID", 1);
-//            singleItemInCart.put("itemNum", 2);
-//            cartList.add(singleItemInCart);
-            // Production:
-            cartListJSON.put("cart", cartList);
+            SingleUserCart sNewUserCart = new SingleUserCart();
+            List<SingleItemInCart> sNewUserCartLst = new ArrayList<>();
+            sNewUserCart.setCart(sNewUserCartLst);
             try{
-                newUserCart.setItems(new ObjectMapper().writeValueAsString(cartListJSON));
-            } catch (JsonProcessingException e){
+                newUserCart.setItems(sNewUserCart);
+            } catch (Exception e){
                 pr.setStatus(ErrorStatusEnum.FAILED_INTERNAL.ordinal());
                 pr.setMessage(e.toString());
+                e.printStackTrace();
                 return new ResponseEntity<>(pr, HttpStatus.INTERNAL_SERVER_ERROR);
             }
             if (sysUsersDao.insert(newUser) == 1 && sysUserCartDao.insert(newUserCart) == 1){

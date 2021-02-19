@@ -2,9 +2,72 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cart</title>
+    <title>Cart Page</title>
+    <style type="text/css">
+        img
+        {
+            border:0;
+            width:90px;
+            height:60px;
+        }
+        h1
+        {
+            text-align: center;
+        }
+        table { border-collapse:collapse; }
+        input { font-size:12px; }
+
+        a:link, a:visited { text-decoration: none;}
+        a:hover, a:active { text-decoration: none;}
+
+        #showCartList {text-align:center; margin:0 auto;width: 80%}
+        #showCartList table { width:80%; line-height:24px; border-top:2px solid #FF7F00; border-bottom:2px solid #FF7F00; }
+        #showCartList table th { background:#FFE7BA; color:#FF7F00; }
+        #showCartList table td { padding:10px 0; border-top:1px solid #FF7F00; }
+        #showCartList table td.thumb img { border:1px solid #dfdfe0; margin:0 10px; vertical-align:middle; }
+        #showCartList table td.number span {padding:0 2px;border:1px #c0c0c0 solid;cursor:pointer;}
+        #showCartList table td.number input { width:20px; border:1px solid #c9c9c9; padding:2px; text-align:center; }
+        #showCartList .total span{line-height:60px;}
+        #showCartList .button input { border:0; width:144px; height:35px; cursor:pointer; }
+    </style>
 </head>
 <body>
-<h1>这是你的购物车</h1>
+
+<h1>我的购物车</h1>
+<a href="/">首页</a>
+<hr>
+<div id="showCartList">
+        <table id="itemTable" border="1">
+            <tr>
+                <th>商品名称</th>
+                <th>商品图片</th>
+                <th>商品描述</th>
+                <th>商品单价</th>
+                <th>商品数量</th>
+                <th>选择</th>
+            </tr>
+            <tr th:each="sItem:${cartItems}" id="product">
+                <td id="ItemName" th:text="${sItem.getCurrentItem().getName()}"></td>
+                <td><img th:src="${sItem.getCurrentItem().getImage()}"></td>
+                <td th:text="${sItem.getCurrentItem().getDescr()}"></td>
+                <td class="sPrice" th:text="${sItem.getCurrentItem().getPrice()}"></td>
+                <td>
+                    <form class="sItemCartUpdateForm">
+                        <input type="hidden" name="sItemID" id="sItemID" th:value="${sItem.getCurrentItem().getId()}">
+                        <label for="sItemNo">当前数量</label>
+                        <input class="ItemNo" type="number" name="sItemNo" id="sItemNo" th:value="${sItem.getItemNum()}">
+                    </form>
+                </td>
+                <td><input type="checkbox" id="sItemChecked" name="sItemChecked"><label for="sItemChecked">选中商品</label></td>
+            </tr>
+        </table>
+        <button onclick="updateCart()">更新商品数量</button>
+        <button onclick="updateFinalPrice()">获取商品总价</button>
+        <button onclick="submitOrder()">提交商品订单</button>
+        <button onclick="deleteItemFromCart()">删除当前商品</button>
+        <h2>选中总价 <span id="finalPrice">0.00</span></h2>
+</div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="/static/js/updateOrder.js"></script>
 </html>

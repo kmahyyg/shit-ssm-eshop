@@ -7,7 +7,7 @@
         <result column="cid" jdbcType="INTEGER" property="cid" />
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="price" jdbcType="DECIMAL" property="price" />
-        <result column="status" jdbcType="INTEGER" property="status" javaType="xyz.kmahyyg.eshopdemo.enums.ItemStatusEnum"/>
+        <result column="status" jdbcType="INTEGER" property="status" javaType="xyz.kmahyyg.eshopdemo.enums.ItemStatusEnum" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
         <result column="image" jdbcType="VARCHAR" property="image" />
         <result column="descr" jdbcType="VARCHAR" property="descr" />
         <result column="shopown" jdbcType="VARCHAR" property="shopown" />
