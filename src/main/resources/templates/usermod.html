@@ -11,7 +11,7 @@
     <span>User Name: </span> <span th:text="${cUser.getUsername()}"></span><br>
     <span>User Phone: </span><span th:text="${cUser.getPhone()}"></span><br>
     <label for="avatar">Avatar Photo:</label>
-    <img th:src="${cUser.getAvatar()}" alt="avatar Photo">
+    <img th:src="${cUser.getAvatar()}" alt="avatar Photo"><br>
     <input type="file" name="avatar" accept="image/png" id="avatar"><br>
     <label for="addr">Address: </label>
     <input type="text" name="addr" required id="addr" th:value="${cUser.getAddr()}"><br>
@@ -39,7 +39,7 @@
         $.ajax({
             url: "/api/user/infomod",
             type: "DELETE",
-        }).done(function(resp){alert(resp);});
+        }).done(function(resp){alert(JSON.stringify(resp));});
     }
 </script>
 </html>
