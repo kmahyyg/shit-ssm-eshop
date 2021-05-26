@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import xyz.kmahyyg.eshopdemo.model.SingleItemInCart;
 import xyz.kmahyyg.eshopdemo.model.SingleUserCart;
 import xyz.kmahyyg.eshopdemo.model.SysUserCart;
 import xyz.kmahyyg.eshopdemo.model.SysUsers;
+import xyz.kmahyyg.eshopdemo.utils.UserInfoUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -45,13 +47,13 @@ public class UserRestController {
         // check if username exists
         if (sysUsersDao.selectByUserName(request.getParameter("username").trim()) != null || request.getParameter("username").trim().isEmpty()){
             pr.setStatus(ErrorStatusEnum.FAILED_USER.ordinal());
-            pr.setMessage("Cannot Register.");
+            pr.setMessage("Cannot Register.1");
             return new ResponseEntity<>(pr, HttpStatus.BAD_REQUEST);
         }
         // check if phone number already registered
         if (sysUsersDao.selectByUserPhone(Long.parseLong(request.getParameter("phone").trim())) != null){
             pr.setStatus(ErrorStatusEnum.FAILED_USER.ordinal());
-            pr.setMessage("Cannot Register.");
+            pr.setMessage("Cannot Register.2");
             return new ResponseEntity<>(pr, HttpStatus.BAD_REQUEST);
         }
         // check if captcha is correct
@@ -92,6 +94,7 @@ public class UserRestController {
             return new ResponseEntity<>(pr, HttpStatus.BAD_REQUEST);
         }
     }
+
     @PostMapping("/user/captcha")
     public ResponseEntity<PublicResponse> getCaptcha(HttpServletRequest request){
         PublicResponse pr = new PublicResponse(ErrorStatusEnum.SUCCESS.ordinal(), "OK!");
@@ -123,6 +126,26 @@ public class UserRestController {
     public ResponseEntity<PublicResponse> modifyUserInfo(HttpServletRequest request){
 
         PublicResponse pr = new PublicResponse(ErrorStatusEnum.SUCCESS.ordinal(), "Ok!");
+        return new ResponseEntity<>(pr, HttpStatus.OK);
+    }
+
+    @Autowired
+    private UserInfoUtil userInfoUtil;
+
+    @DeleteMapping("/user/infomod")
+    public ResponseEntity<PublicResponse> deleteMyUserAcc(){
+        PublicResponse pr = new PublicResponse(ErrorStatusEnum.SUCCESS.ordinal(), "Ok!");
+        String cuid = userInfoUtil.getCurrentUserID();
+        if (cuid == null || cuid.equals("")){
+            pr.setStatus(ErrorStatusEnum.FAILED_INTERNAL.ordinal());
+            pr.setMessage("Cannot get current user!");
+            return new ResponseEntity<>(pr, HttpStatus.BAD_REQUEST);
+        }
+        int affected = sysUsersDao.deleteByUserId(cuid);
+        if (affected != 1) {
+            pr.setStatus(ErrorStatusEnum.FAILED_USER.ordinal());
+            pr.setMessage("failed for delete!");
+        }
         return new ResponseEntity<>(pr, HttpStatus.OK);
     }
 }
