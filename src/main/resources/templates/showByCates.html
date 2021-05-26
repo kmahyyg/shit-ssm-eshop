@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>分类查看</title>
+</head>
+<body>
+<div>
+  分类列表：
+ <ul>
+  <li th:each="sCate:${cateLst}"><a th:href="@{'/show/item/cates?cid=' + ${sCate.getId()}}" th:text="${sCate.getName()}"> </a></li>
+ </ul>
+</div>
+<div>
+    请求类别ID为空时不显示商品。<br>
+    对应类别ID <span th:text="${cIDinQuery}"> </span>商品列表：
+    <ul>
+        <li th:each="sItemInCate:${sIiCList}"><a th:href="@{'/show/item/detail?itemId=' + ${sItemInCate.getId()}}" th:text="${sItemInCate.getName()}"></a></li>
+    </ul>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+</html>
