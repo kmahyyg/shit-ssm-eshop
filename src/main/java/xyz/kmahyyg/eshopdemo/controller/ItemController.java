@@ -48,7 +48,14 @@ public class ItemController {
     }
 
     @GetMapping("/show/item/cates")
-    public String showCates(Model model) {
-        return "xx";
+    public String showCates(Model model, HttpServletRequest request) {
+        String specCateId = request.getParameter("cid");
+        model.addAttribute("cateLst", sysItemCatesDao.selectAll());
+        if (specCateId != null) {
+            Integer specCateIdInt = Integer.valueOf(specCateId);
+            model.addAttribute("cIDinQuery", specCateId);
+            model.addAttribute("sIiCList", sysItemsDao.selectByCateId(specCateIdInt));
+        }
+        return "showByCates";
     }
 }
