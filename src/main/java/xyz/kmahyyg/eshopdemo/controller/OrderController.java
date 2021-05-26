@@ -22,7 +22,7 @@ public class OrderController {
     /**
      * 查看当前用户的历史订单
      * @param model
-     * @return
+     * @return templates using thymeleaf
      */
     @GetMapping("/show/user/order")
     public String showOrderOfCurrentUser(Model model) {

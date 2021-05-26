@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>User Mod</title>
 </head>
 <body>
 <h1>修改用户信息</h1>
-<h3>这是给你上传头像 修改信息的地方 没有漏洞</h3>
-<h3>输入都转义了 文件后台都检测了 可执行都去掉了 不会让你拿到的</h3>
+<form>
 
-<h1>这是你的历史订单</h1>
-<a href="/show/user/order">点击此处查看历史订单</a>
+</form>
 
-<h1>你可以在这给你的订单退款</h1>
+<!--<h3>这是给你上传头像 修改信息的地方 没有漏洞</h3>-->
+<!--<h3>输入都转义了 文件后台都检测了 可执行都去掉了 不会让你拿到的</h3>-->
+
+<div>
+    <h2>这是你的历史订单</h2>
+    <a href="/show/user/order">点击此处查看历史订单</a>
+    <h2>你可以在这给你的订单退款</h2>
+</div>
 
 </body>
 </html>

@@ -118,4 +118,11 @@ public class UserRestController {
         System.out.println(phoneNumberStr + " -- " + rand);
         return new ResponseEntity<>(pr, HttpStatus.OK);
     }
+
+    @PostMapping("/user/infomod")
+    public ResponseEntity<PublicResponse> modifyUserInfo(HttpServletRequest request){
+
+        PublicResponse pr = new PublicResponse(ErrorStatusEnum.SUCCESS.ordinal(), "Ok!");
+        return new ResponseEntity<>(pr, HttpStatus.OK);
+    }
 }

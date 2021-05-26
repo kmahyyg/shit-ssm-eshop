@@ -20,6 +20,7 @@ public class UserController {
         return "login";
     }
 
+    @PreAuthorize("permitAll()")
     @RequestMapping("/show/user/register")
     public String toRegister() {
         return "register";
@@ -30,5 +31,10 @@ public class UserController {
     public ResponseEntity<PublicResponse> showLogout(HttpServletRequest request){
         request.getSession().invalidate();
         return new ResponseEntity<PublicResponse>(new PublicResponse(0, "Logged Out!"), HttpStatus.OK);
+    }
+
+    @RequestMapping("/show/user/modinfo")
+    public String toModInfo() {
+        return "usermod";
     }
 }

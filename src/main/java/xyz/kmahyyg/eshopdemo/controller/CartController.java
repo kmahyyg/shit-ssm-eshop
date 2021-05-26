@@ -46,21 +46,4 @@ public class CartController {
         return "cart";
     }
 
-
-//    @RequestMapping("api/cart/showall")
-//    @ResponseBody
-//    public ResponseEntity<PublicResponse> ShowCartOfCurrentUser() {
-//        UserInfo currentUser = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (currentUser != null) {
-//            String currentUsername = currentUser.getUsername();
-//            if (!currentUsername.isEmpty()){
-//                String currentUserUid = sysUsersDao.selectByUserName(currentUsername).getUid();
-//                List<SysUserCart> allCartItems = sysUserCartDao.selectByUserId(currentUserUid);
-//            }
-//            //TODO: render the orders data in template html
-//        }
-//
-//        return null;
-//    }
-
 }
