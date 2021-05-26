@@ -7,10 +7,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xyz.kmahyyg.eshopdemo.common.PublicResponse;
 import xyz.kmahyyg.eshopdemo.dao.SysUserCartDao;
 import xyz.kmahyyg.eshopdemo.dao.SysUsersDao;
@@ -124,7 +121,8 @@ public class UserRestController {
 
     @PostMapping("/user/infomod")
     public ResponseEntity<PublicResponse> modifyUserInfo(HttpServletRequest request){
-
+        // https://stackoverflow.com/questions/12127531/how-to-get-multipartentity-from-httpservletrequest
+        // or create DTO and use @RequestBody
         PublicResponse pr = new PublicResponse(ErrorStatusEnum.SUCCESS.ordinal(), "Ok!");
         return new ResponseEntity<>(pr, HttpStatus.OK);
     }
