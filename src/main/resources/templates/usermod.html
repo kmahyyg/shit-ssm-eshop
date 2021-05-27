@@ -1,18 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>User Mod</title>
 </head>
 <body>
 <h1>修改用户信息</h1>
-<h3>这是给你上传头像 修改信息的地方 没有漏洞</h3>
-<h3>输入都转义了 文件后台都检测了 可执行都去掉了 不会让你拿到的</h3>
+<form th:action="@{/api/user/infomod}" method="POST" enctype="multipart/form-data">
+    <span>User ID: </span> <span th:text="${cUser.getUid()}"></span><br>
+    <span>User Name: </span> <span th:text="${cUser.getUsername()}"></span><br>
+    <span>User Phone: </span><span th:text="${cUser.getPhone()}"></span><br>
+    <label for="avatar">Avatar Photo:</label>
+    <img th:src="${cUser.getAvatar()}" alt="avatar Photo"><br>
+    <input type="file" name="avatar" accept="image/png" id="avatar"><br>
+    <label for="addr">Address: </label>
+    <input type="text" name="addr" required id="addr" th:value="${cUser.getAddr()}"><br>
+    <label for="preferPayment">默认支付方式</label>
+    <select id="preferPayment" name="preferPayment" th:value="${cUser.getPreferPayment()}">
+        <option value="1">Alipay</option>
+        <option value="2">Paypal</option>
+    </select><br>
+    <button type="submit">Submit</button>
+</form>
 
-<h1>这是你的历史订单</h1>
-<a href="/show/user/order">点击此处查看历史订单</a>
+<button type="button" onclick="deleteMyAccount()">删除我的帐户</button>
+<!--<h3>这是给你上传头像 修改信息的地方 没有漏洞</h3>-->
+<!--<h3>输入都转义了 文件后台都检测了 可执行都去掉了 不会让你拿到的</h3>-->
 
-<h1>你可以在这给你的订单退款</h1>
+<div>
+    <h2>这是你的历史订单</h2>
+    <a href="/show/user/order">点击此处查看历史订单</a>
+    <h2>你可以在这给你的订单退款</h2>
+</div>
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    function deleteMyAccount(){
+        $.ajax({
+            url: "/api/user/infomod",
+            type: "DELETE",
+        }).done(function(resp){alert(JSON.stringify(resp));});
+    }
+</script>
 </html>

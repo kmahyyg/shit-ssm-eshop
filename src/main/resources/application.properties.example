@@ -1,5 +1,7 @@
 #spring.web.resources.static-locations=classpath:/static/
 server.error.whitelabel.enabled=false
+server.error.include-stacktrace=never
+management.endpoints.enabled-by-default=false
 
 ## For Dev Only
 #spring.datasource.driver-class-name=org.h2.Driver
@@ -33,3 +35,8 @@ spring.session.timeout=900
 ## Issue 10: Allow Special HTTP Method to be used in form
 spring.mvc.hiddenmethod.filter.enabled=true
 
+##File size limit
+spring.servlet.multipart.max-file-size=2048KB
+spring.servlet.multipart.max-request-size=2048KB
+
+userfile.upload.path=/tmp/shit-ssm-eshop/uploadfiles
