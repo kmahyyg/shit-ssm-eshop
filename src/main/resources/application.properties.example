@@ -38,3 +38,5 @@ spring.mvc.hiddenmethod.filter.enabled=true
 ##File size limit
 spring.servlet.multipart.max-file-size=2048KB
 spring.servlet.multipart.max-request-size=2048KB
+
+userfile.upload.path=/tmp/shit-ssm-eshop/uploadfiles

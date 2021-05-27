@@ -7,7 +7,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import xyz.kmahyyg.eshopdemo.common.PublicResponse;
 import xyz.kmahyyg.eshopdemo.dao.SysUserCartDao;
 import xyz.kmahyyg.eshopdemo.dao.SysUsersDao;
@@ -16,9 +18,14 @@ import xyz.kmahyyg.eshopdemo.model.SingleItemInCart;
 import xyz.kmahyyg.eshopdemo.model.SingleUserCart;
 import xyz.kmahyyg.eshopdemo.model.SysUserCart;
 import xyz.kmahyyg.eshopdemo.model.SysUsers;
+import xyz.kmahyyg.eshopdemo.utils.FileOperation;
 import xyz.kmahyyg.eshopdemo.utils.UserInfoUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -119,6 +126,24 @@ public class UserRestController {
         return new ResponseEntity<>(pr, HttpStatus.OK);
     }
 
+    @Autowired
+    private FileOperation fileOperation;
+
+    @GetMapping("/user/uploadfile/{full_filename}")
+    public StreamingResponseBody getUploadedFile(@PathVariable String full_filename) throws IOException {
+        InputStream in = fileOperation.readFileFromDisk(full_filename);
+        if (in == null){
+            return null;
+        }
+        return new StreamingResponseBody(){
+            @Override
+            public void writeTo(OutputStream out) throws IOException {
+                FileCopyUtils.copy(in, out);
+            }
+        };
+    }
+
+
     @PostMapping("/user/infomod")
     public ResponseEntity<PublicResponse> modifyUserInfo(HttpServletRequest request){
         // https://stackoverflow.com/questions/12127531/how-to-get-multipartentity-from-httpservletrequest
@@ -146,4 +171,7 @@ public class UserRestController {
         }
         return new ResponseEntity<>(pr, HttpStatus.OK);
     }
+
+
+
 }
