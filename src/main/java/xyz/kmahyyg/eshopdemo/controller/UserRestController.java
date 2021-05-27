@@ -1,7 +1,5 @@
 package xyz.kmahyyg.eshopdemo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
@@ -9,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import xyz.kmahyyg.eshopdemo.common.PublicResponse;
 import xyz.kmahyyg.eshopdemo.dao.SysUserCartDao;
@@ -22,10 +22,7 @@ import xyz.kmahyyg.eshopdemo.utils.FileOperation;
 import xyz.kmahyyg.eshopdemo.utils.UserInfoUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -130,25 +127,43 @@ public class UserRestController {
     private FileOperation fileOperation;
 
     @GetMapping("/user/uploadfile/{full_filename}")
-    public StreamingResponseBody getUploadedFile(@PathVariable String full_filename) throws IOException {
+    public StreamingResponseBody getUploadedFile(@PathVariable String full_filename){
         InputStream in = fileOperation.readFileFromDisk(full_filename);
         if (in == null){
             return null;
         }
-        return new StreamingResponseBody(){
-            @Override
-            public void writeTo(OutputStream out) throws IOException {
-                FileCopyUtils.copy(in, out);
-            }
-        };
+        return out -> FileCopyUtils.copy(in, out);
     }
 
 
     @PostMapping("/user/infomod")
     public ResponseEntity<PublicResponse> modifyUserInfo(HttpServletRequest request){
-        // https://stackoverflow.com/questions/12127531/how-to-get-multipartentity-from-httpservletrequest
-        // or create DTO and use @RequestBody
         PublicResponse pr = new PublicResponse(ErrorStatusEnum.SUCCESS.ordinal(), "Ok!");
+        // https://stackoverflow.com/questions/12127531/how-to-get-multipartentity-from-httpservletrequest
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartFile mFile = multipartRequest.getFile("avatar");
+        SysUsers cUser = new SysUsers();
+        if (mFile != null) {
+            String fileWebPath = fileOperation.writeFileToDisk(mFile);
+            if (fileWebPath == null || fileWebPath.equals("")) {
+                System.out.println("File not exists in request or save failed.");
+            } else {
+                cUser.setAvatar(fileWebPath);
+            }
+        }
+        String mAddr = multipartRequest.getParameter("addr");
+        String cUid = userInfoUtil.getCurrentUserID();
+        Integer prefPay = Integer.valueOf(multipartRequest.getParameter("preferPayment"));
+        cUser.setUid(cUid);
+        cUser.setPreferPayment(prefPay);
+        cUser.setAddr(mAddr);
+
+        int affected = sysUsersDao.updateByUserIdSelective(cUser);
+        if (affected != 1) {
+            pr.setMessage("Failed to Update DB!");
+            pr.setStatus(ErrorStatusEnum.FAILED_INTERNAL.ordinal());
+            return new ResponseEntity<>(pr, HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(pr, HttpStatus.OK);
     }
 
@@ -171,7 +186,4 @@ public class UserRestController {
         }
         return new ResponseEntity<>(pr, HttpStatus.OK);
     }
-
-
-
 }
