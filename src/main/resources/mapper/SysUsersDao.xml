@@ -55,10 +55,10 @@
             <if test="avatar != null">
                 avatar = #{avatar,jdbcType=VARCHAR},
             </if>
-            <if test="preferpayment != null">
+            <if test="preferPayment != null">
                 preferPayment = #{preferPayment,jdbcType=INTEGER},
             </if>
-            <if test="preferdelivery != null">
+            <if test="preferDelivery != null">
                 preferDelivery = #{preferDelivery,jdbcType=INTEGER},
             </if>
             <if test="addr != null">
@@ -88,7 +88,7 @@
             <if test="preferpayment != null">
                 preferPayment = #{preferPayment,jdbcType=INTEGER},
             </if>
-            <if test="preferdelivery != null">
+            <if test="preferDelivery != null">
                 preferDelivery = #{preferDelivery,jdbcType=INTEGER},
             </if>
             <if test="addr != null">
