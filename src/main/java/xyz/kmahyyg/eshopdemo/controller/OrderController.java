@@ -34,4 +34,14 @@ public class OrderController {
         return "userorders";
     }
 
+    @GetMapping("/show/order/{orderid}")
+    public String showOrderDetail(Model model, @PathVariable String orderid) {
+        SysOrders sysOrder = sysOrdersDao.selectByOid(orderid);
+        if (orderid != null) {
+            model.addAttribute("cOrder", sysOrder);
+            return "orderDetail";
+        }
+        return "forward:/error";
+    }
+
 }
