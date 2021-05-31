@@ -41,6 +41,22 @@ public class SysOrders implements Serializable {
     private Integer deliveryId;
 
     @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(500);
+        sb.append("订单ID: ").append(this.oid);
+        sb.append("\n 订单状态： ").append(this.status.toString());
+        sb.append("\n 订单条目： ").append(this.items);
+        sb.append("\n 订单总价： ").append(this.finalPrice.toString());
+        sb.append("\n 订单关联用户ID： ").append(this.uid);
+        sb.append("\n 订单创建时间： ").append(this.genTime.toString());
+        sb.append("\n 订单支付时间： ").append(String.valueOf(this.paidTime));
+        sb.append("\n 订单完成时间： ").append(String.valueOf(this.doneTime));
+        sb.append("\n 订单支付方式： ").append(this.paymentId.toString());
+        sb.append("\n 订单物流方式： ").append(this.deliveryId.toString()).append("\n\n\n");
+        return sb.toString();
+    }
+
+    @Override
     public boolean equals(Object that) {
         if (this == that) {
             return true;

@@ -45,7 +45,7 @@ public class OrderRestController {
                 for (int i = 0; i < userSubmittedCartItems.length(); i++) {
                     JSONObject singleItemInOrder = (JSONObject) userSubmittedCartItems.get(i);
                     int curItemId = Integer.parseInt(singleItemInOrder.getString("itemId"));
-                    int curItemNo = Integer.parseInt(singleItemInOrder.getString("itemNo"));
+                    int curItemNo = Integer.parseInt(singleItemInOrder.getString("itemNum"));
                     SysItems curNewItem = sysItemsDao.selectById(curItemId);
                     if (curNewItem == null){throw new RuntimeException();}
                     BigDecimal curNewItemSinglePrice = curNewItem.getPrice();
@@ -57,6 +57,9 @@ public class OrderRestController {
                 record.setItems(jsonParam);
                 record.setUid(currentUserUid);
                 record.setGenTime(new Date().getTime() / 1000);
+                record.setDoneTime(0L);
+                record.setPaidTime(0L);
+                record.setRefundTime(0L);
                 record.setPaymentId(1);
                 record.setDeliveryId(1);
                 if (sysOrdersDao.insert(record) == 1){
@@ -92,6 +95,7 @@ public class OrderRestController {
                     return new ResponseEntity<>(pr, HttpStatus.UNAUTHORIZED);
                 }
                 if (sysOrdersDao.deleteOrderByOid(orderId) == 1){
+                    // maybe we should set to invalid instead of deleting completely
                     return new ResponseEntity<>(pr, HttpStatus.OK);
                 } else {
                     throw new RuntimeException();

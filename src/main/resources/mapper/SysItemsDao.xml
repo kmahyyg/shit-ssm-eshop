@@ -13,7 +13,7 @@
         <result column="shopown" jdbcType="VARCHAR" property="shopown" />
     </resultMap>
     <sql id="Base_Column_List">
-        id, cid, `name`, price, `status`, image, descr, shopown
+        id, cid, `name`, price, status, image, descr, shopown
     </sql>
     <select id="selectByCateId" parameterType="Integer" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/> from sys_items where cid = #{cid}
@@ -36,7 +36,7 @@
         where cid = #{cid,jdbcType=INTEGER}
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="xyz.kmahyyg.eshopdemo.model.SysItems" useGeneratedKeys="true">
-        insert into sys_items (cid, `name`, price, `status`, image, descr, shopown)
+        insert into sys_items (cid, `name`, price, status, image, descr, shopown)
         values (#{cid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
         #{price,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{image,jdbcType=VARCHAR},
         #{descr,jdbcType=VARCHAR}, #{shopown,jdbcType=VARCHAR})
@@ -54,7 +54,7 @@
                 price = #{price,jdbcType=DECIMAL},
             </if>
             <if test="status != null">
-                `status` = #{status,jdbcType=BOOLEAN},
+                `status` = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
             </if>
             <if test="image != null">
                 image = #{image,jdbcType=VARCHAR},

@@ -34,4 +34,20 @@ public class OrderController {
         return "userorders";
     }
 
+    // 查看订单详情
+    // 校验订单归属
+    @GetMapping("/show/order/{orderid}")
+    public String showOrderDetail(Model model, @PathVariable String orderid) {
+        String currentUserUid = userInfoUtil.getCurrentUserID();
+        SysOrders sysOrder = sysOrdersDao.selectByOid(orderid);
+        if (sysOrder != null && !sysOrder.getUid().equals(currentUserUid)){
+            return "forward:/error";
+        }
+        if (orderid != null) {
+            model.addAttribute("cOrder", sysOrder);
+            return "orderDetail";
+        }
+        return "forward:/error";
+    }
+
 }
