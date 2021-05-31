@@ -8,7 +8,34 @@
  <h1>Order Details</h1>
  <pre th:text="${cOrder}"></pre>
 <h2>Action</h2>
-<a th:href="@{'/show/order/'+${cOrder.oid}+'/pay'}"> Go To Payment </a>
+<h3> Payment Form </h3>
+<form method="post" th:action="@{'/api/order/pay/' + ${cOrder.oid}}">
+    <label for="payAmount">支付金额</label>
+    <input type="number" required id="payAmount" name="payAmount" min="0">
+    <label for="deliveryId">快递方式</label>
+    <select name="deliveryId" id="deliveryId" required>
+        <option value="1">ShunFeng</option>
+        <option value="2">JingDong</option>
+        <option value="3">China EMS</option>
+    </select>
+    <label for="paymentId">支付方式</label>
+    <select name="paymentId" id="paymentId" required>
+        <option value="1">Alipay</option>
+        <option value="2">Paypal</option>
+    </select>
+    <label for="_paymentSubmit">提交订单付款</label>
+    <input type="submit" id="_paymentSubmit" name="_submit">
+</form>
+<h3> Refund Form </h3>
+<form method="post" th:action="@{'/api/order/refund/' + ${cOrder.oid}}">
+    <label for="_refundsubmit">提交订单退款请求</label>
+    <input type="submit" id="_refundsubmit" name="_submit">
+</form>
+<h3> Shipped Form </h3>
+<form method="post" th:action="@{'/api/order/shipout/' + ${cOrder.oid}}">
+    <label for="_shipoutsubmit">商品物流状态更新</label>
+    <input type="submit" id="_shipoutsubmit" name="_submit">
+</form>
 </body>
 </html>
 
