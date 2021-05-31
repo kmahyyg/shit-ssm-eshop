@@ -1,8 +1,8 @@
--- MariaDB dump 10.18  Distrib 10.5.8-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19  Distrib 10.5.10-MariaDB, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: projacc_shopdb
 -- ------------------------------------------------------
--- Server version	10.5.8-MariaDB
+-- Server version	10.5.10-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -60,7 +60,7 @@ CREATE TABLE `sys_items` (
   KEY `sys_items_ibfk_1` (`cid`),
   CONSTRAINT `sys_items_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `sys_item_cates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `sys_items_ibfk_2` FOREIGN KEY (`shopown`) REFERENCES `sys_users` (`uid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +68,7 @@ CREATE TABLE `sys_items` (
 --
 
 /*!40000 ALTER TABLE `sys_items` DISABLE KEYS */;
-INSERT INTO `sys_items` VALUES (1,1,'测试商品1',22.12,1,'/static/imgs/avatar.png','测试商品描述1','8ad3980a-18fe-4951-849b-a6a687aaabd8'),(2,2,'测试商品2',33.55,1,'/static/imgs/avatar.png','测试商品描述2','8ad3980a-18fe-4951-849b-a6a687aaabd8'),(2,3,'测试商品3',89.64,1,'/static/imgs/avatar.png','测试描述3','fa21befd-2cdc-4ad0-af2f-2d58afb50fe4');
+INSERT INTO `sys_items` VALUES (2,3,'测试商品1',89.64,1,'/static/imgs/avatar.png','测试描述1','fa21befd-2cdc-4ad0-af2f-2d58afb50fe4'),(2,4,'测试商品2',22.63,1,'/static/imgs/avatar.png','测试描述3','ad3f8068-879d-422d-8785-034d606a68b2'),(1,5,'测试商品3',65.60,1,'/static/imgs/avatar.png','测试描述4','fa21befd-2cdc-4ad0-af2f-2d58afb50fe4'),(1,6,'测试商品4',19.12,1,'/static/imgs/avatar.png','测试描述5','ad3f8068-879d-422d-8785-034d606a68b2'),(1,7,'测试商品5',77.40,1,'/static/imgs/avatar.png','测试描述2','ad3f8068-879d-422d-8785-034d606a68b2'),(3,8,'测试商品6',23.55,1,'/static/imgs/avatar.png','测试描述6','fa21befd-2cdc-4ad0-af2f-2d58afb50fe4');
 /*!40000 ALTER TABLE `sys_items` ENABLE KEYS */;
 
 --
@@ -81,14 +81,14 @@ DROP TABLE IF EXISTS `sys_orders`;
 CREATE TABLE `sys_orders` (
   `oid` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT uuid(),
   `id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `status` tinyint(1) unsigned NOT NULL,
+  `status` int(4) NOT NULL,
   `items` varchar(5000) COLLATE utf8mb4_unicode_ci NOT NULL,
   `uid` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
   `finalPrice` decimal(14,2) NOT NULL,
   `genTime` bigint(12) NOT NULL DEFAULT unix_timestamp(),
-  `paidTime` bigint(12) DEFAULT NULL,
-  `doneTime` bigint(12) DEFAULT NULL,
-  `refundTime` bigint(12) DEFAULT NULL,
+  `paidTime` bigint(12) DEFAULT 0,
+  `doneTime` bigint(12) DEFAULT 0,
+  `refundTime` bigint(12) DEFAULT 0,
   `paymentId` tinyint(1) unsigned NOT NULL,
   `deliveryId` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
@@ -96,7 +96,7 @@ CREATE TABLE `sys_orders` (
   UNIQUE KEY `orders_uid` (`oid`,`uid`),
   KEY `uid` (`uid`),
   CONSTRAINT `sys_orders_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `sys_users` (`uid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +104,7 @@ CREATE TABLE `sys_orders` (
 --
 
 /*!40000 ALTER TABLE `sys_orders` DISABLE KEYS */;
-INSERT INTO `sys_orders` VALUES ('917decb2-6b04-11eb-8b32-b89a2afc3a6e',1,2,'{\"items\": [{\"itemId\": 1, \"itemNo\": 2}]}','a09ccf60-daba-4507-bfa0-d1688ee5f2ea',44.24,1612895292,NULL,NULL,NULL,1,1);
+INSERT INTO `sys_orders` VALUES ('917decb2-6b04-11eb-8b32-b89a2afc3a6e',1,2,'{\"items\": [{\"itemId\": 1, \"itemNo\": 2}]}','a09ccf60-daba-4507-bfa0-d1688ee5f2ea',44.24,1612895292,0,0,0,1,1),('c7c8b299-1395-4cc2-b491-b0eb879ca677',4,5,'{\"items\":[{\"itemId\":\"5\",\"itemNum\":\"2\"},{\"itemId\":\"3\",\"itemNum\":\"3\"}]}','729653ed-b68c-4350-95b3-8539a63e716b',400.12,1622479128,1622480408,1622480423,1622480435,1,1),('d833c7be-ab40-4164-aa3c-b010ed18290f',5,4,'{\"items\":[{\"itemId\":\"5\",\"itemNum\":\"1\"},{\"itemId\":\"3\",\"itemNum\":\"1\"}]}','729653ed-b68c-4350-95b3-8539a63e716b',155.24,1622479335,1622480458,1622480463,0,1,1);
 /*!40000 ALTER TABLE `sys_orders` ENABLE KEYS */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `sys_user_cart` (
   UNIQUE KEY `uid` (`uid`),
   KEY `uididx` (`uid`),
   CONSTRAINT `sys_user_cart_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `sys_users` (`uid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +130,7 @@ CREATE TABLE `sys_user_cart` (
 --
 
 /*!40000 ALTER TABLE `sys_user_cart` DISABLE KEYS */;
-INSERT INTO `sys_user_cart` VALUES (3,'8ad3980a-18fe-4951-849b-a6a687aaabd8','{\"cart\":[]}'),(4,'a09ccf60-daba-4507-bfa0-d1688ee5f2ea','{\"cart\":[{\"itemId\":1,\"itemNum\":2}, {\"itemId\":3,\"itemNum\":5}]}'),(5,'fa21befd-2cdc-4ad0-af2f-2d58afb50fe4','{\"cart\":[]}');
+INSERT INTO `sys_user_cart` VALUES (4,'a09ccf60-daba-4507-bfa0-d1688ee5f2ea','{\"cart\":[{\"itemId\":1,\"itemNum\":1},{\"itemId\":3,\"itemNum\":1}]}'),(5,'fa21befd-2cdc-4ad0-af2f-2d58afb50fe4','{\"cart\":[]}'),(8,'ad3f8068-879d-422d-8785-034d606a68b2','{\"cart\":[]}'),(9,'729653ed-b68c-4350-95b3-8539a63e716b','{\"cart\":[{\"itemId\":5,\"itemNum\":1},{\"itemId\":3,\"itemNum\":1}]}');
 /*!40000 ALTER TABLE `sys_user_cart` ENABLE KEYS */;
 
 --
@@ -156,7 +156,7 @@ CREATE TABLE `sys_users` (
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `uid` (`uid`),
   UNIQUE KEY `phone` (`phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +164,7 @@ CREATE TABLE `sys_users` (
 --
 
 /*!40000 ALTER TABLE `sys_users` DISABLE KEYS */;
-INSERT INTO `sys_users` VALUES ('admin','0c33d2fd-015b-4c60-bc58-df139dc9d7b9',1,12345678902,'$2a$10$veUS/ypYi0uDSkHefZLg8u1P50DI7JxVH6N3SSQ3EEX5TSsOvIOuG','ROLE_ADMIN','/static/imgs/avatar.png',1,1,'addr123',0),('testuser2','8ad3980a-18fe-4951-849b-a6a687aaabd8',4,12345678002,'$2a$10$.079yr9VLx.Jo0TVpNaVcuWNMdZZw5ZKu09kafPTUXyqw1riPt2VK','ROLE_USER,ROLE_SHOPOWNER','/static/imgs/avatar.png',1,1,'addrtest2',0),('testuser5','a09ccf60-daba-4507-bfa0-d1688ee5f2ea',5,12345678005,'$2a$10$OYnQjXYZaCs0XHpJ7i0GeeqCmqUsL20.izGh0sp1Yj9znrbkr22FG','ROLE_USER','/static/imgs/avatar.png',1,1,'addrtest5',0),('testuser9','fa21befd-2cdc-4ad0-af2f-2d58afb50fe4',6,12345678909,'$2a$10$1s79rdYKIErDIHhMf8QIfebC5xv.EIB3vq2kxCE66azLgH/3DIeoS','ROLE_USER,ROLE_SHOPOWNER','/static/imgs/avatar.png',1,1,'testaddr09',0);
+INSERT INTO `sys_users` VALUES ('admin','0c33d2fd-015b-4c60-bc58-df139dc9d7b9',1,12345678902,'$2a$10$veUS/ypYi0uDSkHefZLg8u1P50DI7JxVH6N3SSQ3EEX5TSsOvIOuG','ROLE_ADMIN','/static/imgs/avatar.png',1,1,'addr123',0),('testuser5','a09ccf60-daba-4507-bfa0-d1688ee5f2ea',5,12345678005,'$2a$10$OYnQjXYZaCs0XHpJ7i0GeeqCmqUsL20.izGh0sp1Yj9znrbkr22FG','ROLE_USER','/static/imgs/avatar.png',1,1,'addrtest5',0),('testuser9','fa21befd-2cdc-4ad0-af2f-2d58afb50fe4',6,12345678909,'$2a$10$1s79rdYKIErDIHhMf8QIfebC5xv.EIB3vq2kxCE66azLgH/3DIeoS','ROLE_USER,ROLE_SHOPOWNER','/static/imgs/avatar.png',1,1,'testaddr09',0),('testuser7','ad3f8068-879d-422d-8785-034d606a68b2',9,12344455667,'$2a$10$85mlGkn3yVrUeJGTlXxGVOHXigYgdVden0DCGxtHD8ENdrsSx2Cky','ROLE_USER','/api/user/uploadfile/3eb762c9-e76e-4929-80d2-3106a95150f3.png',1,1,'testuser7testuser9',0),('testuser88','729653ed-b68c-4350-95b3-8539a63e716b',10,17089473844,'$2a$10$HYhSYrBXpFHeebWbFCJrfeKI9XI9wLTeF3JtgbjCt66BJ2QbispFu','ROLE_USER','/api/user/uploadfile/7a0f272a-3c23-4516-a190-08af3f1eb9c8.png',2,1,'arstul3htluqht',0);
 /*!40000 ALTER TABLE `sys_users` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -176,4 +176,4 @@ INSERT INTO `sys_users` VALUES ('admin','0c33d2fd-015b-4c60-bc58-df139dc9d7b9',1
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-15 20:39:46
+-- Dump completed on 2021-06-01  1:13:14
